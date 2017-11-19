@@ -122,10 +122,10 @@ public class SellerUrlHelper {
         params.put("SearchIndex", "Apparel");
         params.put("AssociateTag", "brmca-20");
         params.put("BrowseNode", browseNode);
-        //if (brand!=null) params.put("Brand", brand);
+        if (seller!=null) params.put("Brand", seller);
         params.put("Availability", "Available");
         //if (onlyAmazon) 
-        if (seller !=null) params.put("MerchantId", seller);
+        //if (seller !=null) params.put("MerchantId", seller);
         //params.put("Sort", "salesrank");
         params.put("ItemPage", new Integer(pageNumber).toString());
         if (keyword != null) params.put("Keywords", keyword);
@@ -156,7 +156,7 @@ public class SellerUrlHelper {
     
     
     public static void main(String[] args) {
-    	SellerUrlHelper h = new SellerUrlHelper(null,"1045630",1,"flannel");
+    	SellerUrlHelper h = new SellerUrlHelper("adidas","1045640",1,null);
     	h.getUrl();
     }
 

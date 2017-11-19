@@ -1,4 +1,4 @@
-package com.careydevelopment.autobest.masculex;
+package com.careydevelopment.autobest.domain;
 
 import java.util.Date;
 
