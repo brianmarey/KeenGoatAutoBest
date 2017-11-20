@@ -1,11 +1,6 @@
 package com.careydevelopment.autobest.masculex;
 
-import java.io.File;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,13 +10,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-
+import com.careydevelopment.autobest.domain.Context;
 import com.careydevelopment.autobest.domain.Post;
+import com.careydevelopment.autobest.domain.Product;
+import com.careydevelopment.autobest.util.AmazonDocumentParser;
 import com.careydevelopment.autobest.util.BrandParser;
 import com.careydevelopment.autobest.util.IntroHelper;
 import com.careydevelopment.autobest.util.Sanitizer;
@@ -32,12 +24,14 @@ public class ProcessMasculex {
 
 	private Connection connect = null;
 	private Properties props = null;
-
+	private int contextId;
+	
 	
 	private static final String[][] CATEGORIES = {{"Men's Polo Shirts","Men's Polo Shirt"}};
 	private static final String[] NODES = {"1045640"};
 	private static final String[] BRANDS = {"https://www.amazon.com/gp/search/other/ref=lp_1045640_sa_p_89?rh=n%3A7141123011%2Cn%3A7147441011%2Cn%3A1040658%2Cn%3A2476517011%2Cn%3A1045640&bbn=1045640&pickerToList=lbr_brands_browse-bin&ie=UTF8&qid=1511013168"};
 	
+	private String CONTEXT_NAME = "masculex";
 	
 	public static void main(String[] args) {
 		ProcessMasculex pm = new ProcessMasculex();
@@ -51,6 +45,8 @@ public class ProcessMasculex {
 			String connectionString = props.getProperty("jdbc.connection");	
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			connect = DriverManager.getConnection(connectionString);
+			
+			fetchContext();
 			
 			for (int i=0; i<CATEGORIES.length; i++) {
 				processCategory(i);
@@ -67,6 +63,26 @@ public class ProcessMasculex {
 				} catch (Exception e) {}
 			}
 		}
+	}
+	
+	
+	private void fetchContext() {
+		try (PreparedStatement ps = connect.prepareStatement("select id from context where name=?")) {
+			ps.setString(1, CONTEXT_NAME);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				contextId = rs.getInt(1);
+			} else {
+				throw new RuntimeException("Can't find context!");
+			}
+			
+			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	
@@ -129,7 +145,29 @@ public class ProcessMasculex {
 		for (int i=1;i<=2;i++) {
 			SellerUrlHelper urlHelper = new SellerUrlHelper(brand,node,i,null);
 			String url = urlHelper.getUrl();
+
+			AmazonDocumentParser parser = new AmazonDocumentParser(url);
+			List<Product> products = parser.getProducts();
 			
+			for (Product product : products) {
+				product.setPostId(post.getId());
+				persistProduct(product);
+			}
+		}
+	}
+	
+	
+	private void persistProduct(Product product) {
+		try (PreparedStatement ps = connect.prepareStatement("insert into product (title, description, post_id, link, imageUrl) values (?,?,?,?,?)")) {
+			ps.setString(1, product.getTitle());
+			ps.setString(2, product.getDescription());
+			ps.setInt(3, product.getPostId());
+			ps.setString(4, product.getLink());
+			ps.setString(5, product.getImageUrl());
+			
+			ps.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -137,11 +175,12 @@ public class ProcessMasculex {
 	private void addPost(Post post) {
 		int id = 0;
 		
-		try (PreparedStatement ps = connect.prepareStatement("insert into post (slug,intro,date,title) values (?,?,?,?)")) {
+		try (PreparedStatement ps = connect.prepareStatement("insert into post (slug,intro,date,title,context_id) values (?,?,?,?,?)")) {
 			ps.setString(1, post.getSlug());
 			ps.setString(2, post.getIntro());
 			ps.setDate(3, new java.sql.Date(post.getDate().getTime()));
 			ps.setString(4, post.getTitle());
+			ps.setInt(5, contextId);
 			
 			ps.execute();			
 		} catch (Exception e) {

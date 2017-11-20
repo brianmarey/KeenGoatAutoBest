@@ -7,6 +7,7 @@ public class Product {
 	private String description;
 	private int postId;
 	private String link;
+	private String imageUrl;
 	
 	public int getId() {
 		return id;
@@ -38,4 +39,11 @@ public class Product {
 	public void setLink(String link) {
 		this.link = link;
 	}
+	public String getImageUrl() {
+		return imageUrl;
+	}
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+	
 }
