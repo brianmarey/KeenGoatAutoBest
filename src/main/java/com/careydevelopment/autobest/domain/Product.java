@@ -8,6 +8,8 @@ public class Product {
 	private int postId;
 	private String link;
 	private String imageUrl;
+	private String lowestPrice;
+	private String highestPrice;
 	
 	public int getId() {
 		return id;
@@ -45,5 +47,16 @@ public class Product {
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
-	
+	public String getLowestPrice() {
+		return lowestPrice;
+	}
+	public void setLowestPrice(String lowestPrice) {
+		this.lowestPrice = lowestPrice;
+	}
+	public String getHighestPrice() {
+		return highestPrice;
+	}
+	public void setHighestPrice(String highestPrice) {
+		this.highestPrice = highestPrice;
+	}
 }

@@ -70,12 +70,13 @@ public class SellerUrlHelper {
         params.put("Service", "AWSECommerceService");
         params.put("Version", "2011-08-01");
         params.put("Operation", "ItemSearch");
-        params.put("ResponseGroup", "Large,EditorialReview,Variations,ItemAttributes");
+        params.put("ResponseGroup", "Large,EditorialReview,Variations,OfferFull,ItemAttributes");
         params.put("SearchIndex", "Apparel");
         params.put("AssociateTag", "brmca-20");
         params.put("BrowseNode", browseNode);
         //if (brand!=null) params.put("Brand", brand);
         params.put("Availability", "Available");
+        params.put("MerchantId", "All");
         //if (onlyAmazon) params.put("MerchantId", "Amazon");
         //if (seller !=null) params.put("MerchantId", seller);
         params.put("Sort", sortType);
@@ -118,12 +119,13 @@ public class SellerUrlHelper {
         params.put("Service", "AWSECommerceService");
         params.put("Version", "2011-08-01");
         params.put("Operation", "ItemSearch");
-        params.put("ResponseGroup", "Large,EditorialReview,ItemAttributes");
+        params.put("ResponseGroup", "Large,EditorialReview,OfferSummary,VariationSummary");
         params.put("SearchIndex", "Apparel");
         params.put("AssociateTag", "brmca-20");
         params.put("BrowseNode", browseNode);
         if (seller!=null) params.put("Brand", seller);
         params.put("Availability", "Available");
+        //params.put("MerchantId", "All");
         //if (onlyAmazon) 
         //if (seller !=null) params.put("MerchantId", seller);
         //params.put("Sort", "salesrank");

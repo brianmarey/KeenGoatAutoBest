@@ -51,6 +51,8 @@ public class AmazonDocumentParser {
         product.setImageUrl(getGrandchildTagValue("LargeImage", "URL", element));
         product.setDescription(getGreatGrandchildTagValue("EditorialReviews", "EditorialReview", "Content", element));
         product.setTitle(getGrandchildTagValue("ItemAttributes", "Title", element));
+        product.setHighestPrice(getGreatGrandchildTagValue("VariationSummary", "HighestPrice", "FormattedPrice", element));
+        product.setLowestPrice(getGreatGrandchildTagValue("VariationSummary", "LowestPrice", "FormattedPrice", element));
         
 		return product;
 	}

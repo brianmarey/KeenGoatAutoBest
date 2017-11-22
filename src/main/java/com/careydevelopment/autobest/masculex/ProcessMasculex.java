@@ -158,12 +158,14 @@ public class ProcessMasculex {
 	
 	
 	private void persistProduct(Product product) {
-		try (PreparedStatement ps = connect.prepareStatement("insert into product (title, description, post_id, link, imageUrl) values (?,?,?,?,?)")) {
+		try (PreparedStatement ps = connect.prepareStatement("insert into product (title, description, post_id, link, imageUrl, highestPrice, lowestPrice) values (?,?,?,?,?,?,?)")) {
 			ps.setString(1, product.getTitle());
 			ps.setString(2, product.getDescription());
 			ps.setInt(3, product.getPostId());
 			ps.setString(4, product.getLink());
 			ps.setString(5, product.getImageUrl());
+			ps.setString(6,  product.getHighestPrice());
+			ps.setString(7, product.getLowestPrice());
 			
 			ps.execute();
 		} catch (Exception e) {
