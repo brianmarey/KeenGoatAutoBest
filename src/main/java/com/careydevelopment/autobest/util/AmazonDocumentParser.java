@@ -62,9 +62,16 @@ public class AmazonDocumentParser {
     	String value = null;
     	
     	if (element != null && tag != null) {
-            NodeList nodeList = element.getElementsByTagName(tag).item(0).getChildNodes();
-            Node node = (Node) nodeList.item(0);
-            value = node.getNodeValue();    		
+    		NodeList tops = element.getElementsByTagName(tag);
+    		
+    		if (tops != null && tops.getLength() > 0) {
+                NodeList nodeList = tops.item(0).getChildNodes();
+                
+                if (nodeList != null && nodeList.getLength() > 0) {
+                    Node node = (Node) nodeList.item(0);
+                    value = node.getNodeValue();    		    			                	
+                }
+    		}
     	}
     	
     	return value;

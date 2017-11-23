@@ -107,8 +107,6 @@ public class ProcessMasculex {
 		List<String> brands = BrandParser.parse(BRANDS[index]);
 		List<String> titles = new ArrayList<String>();
 
-		int i=0;
-		
 		for (String brand : brands) {
 			Post post = new Post();
 			
@@ -126,10 +124,11 @@ public class ProcessMasculex {
 				post.setTitle(title);
 				
 				addListicle(post, node, brand);
-			}
-			
-			i++;
-			if (i>1) break;
+				
+				try {
+					Thread.sleep(1000);
+				} catch (Exception e) {}
+			}			
 		}
 	}
 
@@ -150,8 +149,12 @@ public class ProcessMasculex {
 			List<Product> products = parser.getProducts();
 			
 			for (Product product : products) {
-				product.setPostId(post.getId());
-				persistProduct(product);
+				try {
+					product.setPostId(post.getId());
+					persistProduct(product);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
