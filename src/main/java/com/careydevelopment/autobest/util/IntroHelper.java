@@ -7,7 +7,9 @@ public class IntroHelper {
 		
 		sb.append("Looking for a great ");
 		sb.append(singular);
-		sb.append("? Here are the top 20 options.");
+		sb.append("? Here are the top 20 options from");
+		sb.append(brand);
+		sb.append(".");
 		
 		return sb.toString();
 	}
