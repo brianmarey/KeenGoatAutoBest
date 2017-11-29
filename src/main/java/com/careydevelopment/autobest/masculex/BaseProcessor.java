@@ -54,7 +54,6 @@ public abstract class BaseProcessor {
 					connect.close();
 				} catch (Exception e) {}
 			}		
-			
 		}
 	}
 	
@@ -75,7 +74,6 @@ public abstract class BaseProcessor {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	
@@ -117,7 +115,7 @@ public abstract class BaseProcessor {
 					post.setSlug(slug);
 					post.setTitle(title);
 					
-					addListicle(post, node, brand);
+					addListicle(post, node, brand, category);
 					Thread.sleep(1000);
 				}	
 			} catch (Exception e) {
@@ -127,7 +125,7 @@ public abstract class BaseProcessor {
 	}
 
 	
-	private void addListicle(Post post, String node, String brand) {
+	protected void addListicle(Post post, String node, String brand, String category) {
 		List<Product> allProducts = new ArrayList<Product>();
 		
 		for (int i=1;i<=2;i++) {
@@ -147,7 +145,7 @@ public abstract class BaseProcessor {
 	}
 	
 	
-	private void addList(Post post, List<Product> products) {
+	protected void addList(Post post, List<Product> products) {
 		for (Product product : products) {
 			try {
 				product.setPostId(post.getId());
@@ -176,7 +174,7 @@ public abstract class BaseProcessor {
 	}
 	
 	
-	private void addPost(Post post) {
+	protected void addPost(Post post) {
 		int id = 0;
 		
 		try (PreparedStatement ps = connect.prepareStatement("insert into post (slug,intro,date,title,context_id) values (?,?,?,?,?)")) {
