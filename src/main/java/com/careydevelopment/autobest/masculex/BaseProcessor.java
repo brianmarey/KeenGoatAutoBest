@@ -122,6 +122,31 @@ public abstract class BaseProcessor {
 				e.printStackTrace();
 			}
 		}
+		
+		//handle no brand
+		try {
+			Post post = new Post();
+			
+			String title = "The 20 Best " + category + " for 2018";
+			title = Sanitizer.sanitize(title);
+						
+			if (notFound(titles, title)) {
+				titles.add(title);
+				String intro = IntroHelper.getIntro(null, categories[index][1]); 
+				String slug = SlugHelper.getSlug(title);
+				
+				post.setDate(new Date());
+				post.setIntro(intro);
+				post.setSlug(slug);
+				post.setTitle(title);
+				
+				addListicle(post, node, null, category);
+				Thread.sleep(1000);
+			}	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	
