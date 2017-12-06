@@ -30,6 +30,8 @@ public abstract class BaseProcessor {
 	protected String[] brandNames = {};
 	protected String contextName;
 	
+	protected int numberOfItems = 20;
+	
 	protected void go() {		
 		try {
 			props = getProperties();
@@ -102,7 +104,7 @@ public abstract class BaseProcessor {
 			try {
 				Post post = new Post();
 				
-				String title = "The 20 Best " + brand + " " + category + " for 2018";
+				String title = "The " + numberOfItems + " Best " + brand + " " + category + " for 2018";
 				title = Sanitizer.sanitize(title);
 							
 				if (notFound(titles, title)) {
@@ -127,7 +129,7 @@ public abstract class BaseProcessor {
 		try {
 			Post post = new Post();
 			
-			String title = "The 20 Best " + category + " for 2018";
+			String title = "The " + numberOfItems + " Best " + category + " for 2018";
 			title = Sanitizer.sanitize(title);
 						
 			if (notFound(titles, title)) {
@@ -146,14 +148,15 @@ public abstract class BaseProcessor {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	
 	protected void addListicle(Post post, String node, String brand, String category) {
 		List<Product> allProducts = new ArrayList<Product>();
 		
-		for (int i=1;i<=2;i++) {
+		int count = numberOfItems / 10;
+		
+		for (int i=1;i<=count;i++) {
 			SellerUrlHelper urlHelper = new SellerUrlHelper(brand,node,i,null);
 			String url = urlHelper.getUrl();
 
